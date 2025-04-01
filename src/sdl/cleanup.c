@@ -3,9 +3,7 @@
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
   AppState *state = (AppState *)appstate;
 
-  for (int i = 0; i < entities_count; i++) {
-    entities[i].cleanup();
-  }
+  ENTITIES_RUN_OPTIONAL(cleanup)
 
   SDL_DestroyRenderer(state->renderer);
   state->renderer = NULL;

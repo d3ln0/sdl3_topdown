@@ -1,16 +1,10 @@
 #include "player.h"
-#include "SDL3/SDL_render.h"
-#include "SDL3/SDL_surface.h"
-#include "entity.h"
 
 static SDL_Texture *player_texture;
 static SDL_FRect sprite_portion = {17, 14, 15, 18};
 
-typedef struct {
-  float x, y;
-} Position;
-
-Position position = {0, 0};
+SpriteSize sprite_size = {15, 18};
+Position player_position = {0, 0};
 
 static void cleanup() {}
 
@@ -20,23 +14,38 @@ static void update(float delta_time) {
   const _Bool *keyboard_state = SDL_GetKeyboardState(NULL);
 
   if (keyboard_state[SDL_SCANCODE_W]) {
-    position.y -= 30 * delta_time;
+    player_position.y -= 30 * delta_time;
   }
   if (keyboard_state[SDL_SCANCODE_S]) {
-    position.y += 30 * delta_time;
+    player_position.y += 30 * delta_time;
   }
   if (keyboard_state[SDL_SCANCODE_D]) {
-    position.x += 30 * delta_time;
+    player_position.x += 30 * delta_time;
   }
   if (keyboard_state[SDL_SCANCODE_A]) {
-    position.x -= 30 * delta_time;
+    player_position.x -= 30 * delta_time;
   }
 }
 
 static void render(SDL_Renderer *renderer) {
-  SDL_FRect player_position = {position.x, position.y, 15, 18};
-  SDL_RenderTexture(renderer, player_texture, &sprite_portion,
-                    &player_position);
+  float final_x = camera.w / 2 - sprite_size.w / 2; // center player in camera
+  float final_y = camera.h / 2 - sprite_size.h / 2;
+
+  if (camera.x <= 0) {
+    final_x = player_position.x - sprite_size.w / 2;
+  }
+  if (camera.y <= 0) {
+    final_y = player_position.y - sprite_size.h / 2;
+  }
+  if (camera.x + camera.w >= 420) {
+    final_x = player_position.x - (420 - camera.w) - sprite_size.w / 2;
+  }
+  if (camera.y + camera.h >= 240) {
+    final_y = player_position.y - (240 - camera.h) - sprite_size.h / 2;
+  }
+
+  SDL_FRect player_rect = {final_x, final_y, sprite_size.w, sprite_size.h};
+  SDL_RenderTexture(renderer, player_texture, &sprite_portion, &player_rect);
 }
 
 void init_player(SDL_Renderer *sdl_renderer) {

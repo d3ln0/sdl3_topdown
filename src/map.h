@@ -1,5 +1,6 @@
 #pragma once
 #include "SDL3/SDL_render.h"
+#include "camera.h"
 #include "entity.h"
 #include "external/cute_tiled.h"
 #include <SDL3/SDL.h>

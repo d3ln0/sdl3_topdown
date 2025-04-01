@@ -58,8 +58,8 @@ static void render(SDL_Renderer *renderer) {
         };
 
         SDL_FRect dst = {
-            j * map->tilewidth,
-            i * map->tileheight,
+            j * map->tilewidth - camera.x,
+            i * map->tileheight - camera.y,
             map->tilewidth,
             map->tileheight,
         };
@@ -71,10 +71,6 @@ static void render(SDL_Renderer *renderer) {
     temp_layer = temp_layer->next;
   }
 }
-
-void cleanup() {}
-void handle_event(SDL_Event *event) {}
-void update(float delta) {}
 
 void init_map(SDL_Renderer *renderer) {
   const char map_path[] = "./tiled/map.json";
@@ -116,10 +112,7 @@ void init_map(SDL_Renderer *renderer) {
     }
   }
 
-  Entity map_e = {.cleanup = cleanup,
-                  .handle_event = handle_event,
-                  .render = render,
-                  .update = update};
+  Entity map_e = {.render = render};
 
   create_entity(map_e);
 }
