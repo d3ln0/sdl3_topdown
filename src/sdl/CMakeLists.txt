@@ -1,0 +1,1 @@
+target_sources(${PROJECT_NAME} PRIVATE cleanup.c events.c init.c iterate.c render.c update.c PUBLIC common.h init.h iterate.h render.h update.h)

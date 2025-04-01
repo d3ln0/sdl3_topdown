@@ -1,9 +1,7 @@
 #include "player.h"
-#include "SDL3/SDL_keyboard.h"
-#include "SDL3/SDL_scancode.h"
 
-static SDL_FRect sprite_portion = {17, 14, 15, 18};
 static SDL_Texture *player_texture;
+static SDL_FRect sprite_portion = {17, 14, 15, 18};
 
 typedef struct {
   float x, y;
