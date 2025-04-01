@@ -2,7 +2,9 @@
 #include "SDL3/SDL_rect.h"
 #include "SDL3/SDL_render.h"
 #include "SDL3/SDL_stdinc.h"
+#include "SDL3/SDL_surface.h"
 #include "SDL3_image/SDL_image.h"
+#include "entity.h"
 #include "external/cute_tiled.h"
 #define CUTE_TILED_IMPLEMENTATION
 #include "map.h"
@@ -74,7 +76,7 @@ void cleanup() {}
 void handle_event(SDL_Event *event) {}
 void update(float delta) {}
 
-Entity init_map(SDL_Renderer *renderer) {
+void init_map(SDL_Renderer *renderer) {
   const char map_path[] = "./tiled/map.json";
   map = cute_tiled_load_map_from_file(map_path, NULL);
 
@@ -94,9 +96,10 @@ Entity init_map(SDL_Renderer *renderer) {
 
     if (!current_texture->texture) {
       SDL_Log("Error loading texture for tileset");
-    } else {
-      SDL_Log("Texture loaded successfully");
+      continue;
     }
+    SDL_Log("Texture loaded successfully");
+    SDL_SetTextureScaleMode(current_texture->texture, SDL_SCALEMODE_NEAREST);
 
     current_texture->firstgid = tileset->firstgid;
     current_texture->tilecount = tileset->tilecount;
@@ -117,5 +120,6 @@ Entity init_map(SDL_Renderer *renderer) {
                   .handle_event = handle_event,
                   .render = render,
                   .update = update};
-  return map_e;
+
+  create_entity(map_e);
 }

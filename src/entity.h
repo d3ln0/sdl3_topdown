@@ -14,3 +14,7 @@ typedef struct {
 
 extern Entity entities[MAX_ENTITIES];
 extern int entities_count;
+
+void swap_entities(int index1, int index2);
+void delete_entity(int index);
+void create_entity(Entity entity);
