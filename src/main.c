@@ -1,7 +1,9 @@
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_init.h"
 #include "SDL3/SDL_render.h"
+#include "SDL3/SDL_timer.h"
 #include "SDL3/SDL_video.h"
+#include <stdint.h>
 #define SDL_MAIN_USE_CALLBACKS
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -14,9 +16,9 @@
     entities[i].render(renderer);                                              \
   }
 
-#define UPDATE_ENTITIES(entities, entities_count)                              \
+#define UPDATE_ENTITIES(entities, entities_count, delta_time)                  \
   for (int i = 0; i < entities_count; i++) {                                   \
-    entities[i].update();                                                      \
+    entities[i].update(delta_time);                                            \
   }
 
 #define QUIT_ENTITIES(entities, entities_count)                                \
@@ -35,6 +37,10 @@ SDL_Renderer *renderer;
 Entity entities[MAX_ENTITIES];
 int entities_count = 0;
 
+Uint32 last_tick = 0;
+Uint32 current_tick = 0;
+float delta_time;
+
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
   SDL_DestroyRenderer(renderer);
   renderer = NULL;
@@ -51,7 +57,13 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
   return SDL_APP_CONTINUE;
 }
 
-void update() { UPDATE_ENTITIES(entities, entities_count); }
+void update() {
+  last_tick = current_tick;
+  current_tick = SDL_GetTicks();
+  delta_time = (current_tick - last_tick) / 1000.0f;
+
+  UPDATE_ENTITIES(entities, entities_count, delta_time);
+}
 
 void render() {
   SDL_RenderClear(renderer);

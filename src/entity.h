@@ -8,6 +8,6 @@
 typedef struct {
   void (*quit)(void);
   void (*handle_event)(SDL_Event *);
-  void (*update)(void);
+  void (*update)(float);
   void (*render)(SDL_Renderer *);
 } Entity;

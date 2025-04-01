@@ -15,20 +15,20 @@ static void quit() {}
 
 static void handle_event() {}
 
-static void update() {
+static void update(float delta_time) {
   const _Bool *keyboard_state = SDL_GetKeyboardState(NULL);
 
   if (keyboard_state[SDL_SCANCODE_W]) {
-    position.y -= 1;
+    position.y -= 30 * delta_time;
   }
   if (keyboard_state[SDL_SCANCODE_S]) {
-    position.y += 1;
+    position.y += 30 * delta_time;
   }
   if (keyboard_state[SDL_SCANCODE_D]) {
-    position.x += 1;
+    position.x += 30 * delta_time;
   }
   if (keyboard_state[SDL_SCANCODE_A]) {
-    position.x -= 1;
+    position.x -= 30 * delta_time;
   }
 }
 
