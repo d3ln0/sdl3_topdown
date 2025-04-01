@@ -9,7 +9,7 @@ typedef struct {
 
 Position position = {0, 0};
 
-static void quit() {}
+static void cleanup() {}
 
 static void handle_event() {}
 

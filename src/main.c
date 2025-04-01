@@ -15,7 +15,7 @@
 
 #define QUIT_ENTITIES(entities, entities_count)                                \
   for (int i = 0; i < entities_count; i++) {                                   \
-    entities[i].quit();                                                        \
+    entities[i].cleanup();                                                     \
   }
 
 #define HANDLE_EVENT_ENTITIES(entities, entities_count, event)                 \
